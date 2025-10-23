@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrainSphere - Learn from Industry Experts</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header / Navbar -->
+  <header>
+    <div class="logo">TrainSphere</div>
+    <nav>
+      <ul>
+        <li><a href="/home.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="index.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Empowering Students with Industry-Level Skills</h1>
+    <p>At <strong>TrainSphere</strong>, our mission is to bridge the gap between college and corporate. Learn from real industry professionals at minimal prices — ₹6,000 to ₹12,000!</p>
+    <button class="cta" onclick="location.href='/courses.html'">View Courses</button>
+  </section>
+
+  <!-- Image Slider -->
+<div class="slider">
+  <img id="slideImage" src="images/1.png" alt="Slide">
+  <button class="arrow left" onclick="prevSlide()">&#10094;</button>
+  <button class="arrow right" onclick="nextSlide()">&#10095;</button>
+</div>
+
+  <!-- Hot Courses -->
+  <section class="section courses">
+    <h2 style="text-align: center; margin-top: 20px;"> Our Hot Courses</h2>
+    <div class="course-list">
+      <div class="course-card"><h3>PHP - Laravel</h3><ul><li>Build real-world apps</li><li>Secure coding practices</li><li>Laravel expertise</li></ul></div>
+      <div class="course-card"><h3>DevOps</h3><ul><li>CI/CD, Docker, Kubernetes basics</li><li>Deploy apps efficiently</li><li>Automation & cloud integration</li></ul></div>
+      <div class="course-card"><h3>Node.js</h3><ul><li>Build scalable APIs</li><li>Real-time apps</li><li>Express.js framework knowledge</li></ul></div>
+      <div class="course-card"><h3>React.js</h3><ul><li>Build modern web apps</li><li>Reusable components</li><li>React ecosystem knowledge</li></ul></div>
+      <div class="course-card"><h3>AI / ML</h3><ul><li>Python & ML algorithms</li><li>Predictive models</li><li>AI portfolio projects</li></ul></div>
+      <div class="course-card"><h3>Basic Front-End</h3><ul><li>HTML, CSS, JS fundamentals</li><li>Responsive design</li><li>Hands-on mini-projects</li></ul></div>
+      <div class="course-card"><h3>Soft Skills</h3><ul><li>Resume building & interview prep</li><li>Professional behavior & presentation skills</li><li>Effective communication</li></ul></div>
+    </div>
+  </section>
+
+  <!-- Combined Section: Why + Detailed Courses -->
+  <section class="section combined-section">
+    <!-- Why Choose TrainSphere -->
+    <div class="why-us-card">
+      <h2>Why Choose TrainSphere?</h2>
+      <ul>
+        <li>Learn from industry-experienced professionals, not just teachers.</li>
+        <li>Affordable courses designed for college students (₹6k–₹12k range).</li>
+        <li>Hands-on projects and practical knowledge that can kickstart your career.</li>
+        <li>Hot courses in high-demand IT and Tech fields — PHP-Laravel, DevOps, Node.js, React.js, AI/ML, Front-End, Soft Skills.</li>
+        <li>Flexible learning: Learn at your own pace with recorded sessions + live interaction.</li>
+      </ul>
+    </div>
+
+    <!-- Detailed Course Cards -->
+    <div class="courses-detail-cards">
+      <div class="course-detail-card">
+        <h3>PHP - Laravel</h3>
+        <p><strong>Why:</strong> Learn backend web development with high demand in IT companies.</p>
+        <p><strong>Advantages:</strong> Build real-world apps, understand MVC architecture, Laravel framework expertise.</p>
+      </div>
+      <div class="course-detail-card">
+        <h3>DevOps</h3>
+        <p><strong>Why:</strong> Automation & cloud integration skills are essential in modern IT.</p>
+        <p><strong>Advantages:</strong> CI/CD pipelines, Docker, Kubernetes basics, efficient deployment practices.</p>
+      </div>
+      <div class="course-detail-card">
+        <h3>Node.js</h3>
+        <p><strong>Why:</strong> Popular backend technology using JavaScript.</p>
+        <p><strong>Advantages:</strong> Build scalable APIs, real-time apps, work with Express.js framework.</p>
+      </div>
+      <div class="course-detail-card">
+        <h3>React.js</h3>
+        <p><strong>Why:</strong> Modern frontend framework in high demand.</p>
+        <p><strong>Advantages:</strong> Build responsive web apps, reusable components, React ecosystem knowledge.</p>
+      </div>
+      <div class="course-detail-card">
+        <h3>AI / ML</h3>
+        <p><strong>Why:</strong> Future technology, huge career scope.</p>
+        <p><strong>Advantages:</strong> Python programming, ML algorithms, predictive models, AI portfolio projects.</p>
+      </div>
+      <div class="course-detail-card">
+        <h3>Basic Front-End</h3>
+        <p><strong>Why:</strong> Foundation for all web development careers.</p>
+        <p><strong>Advantages:</strong> HTML, CSS, JavaScript fundamentals, responsive design, mini-projects.</p>
+      </div>
+      <div class="course-detail-card">
+        <h3>Soft Skills</h3>
+        <p><strong>Why:</strong> Essential for professional growth.</p>
+        <p><strong>Advantages:</strong> Resume building, interview prep, communication, and presentation skills.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 <span>TrainSphere</span> | Founded by Sujatro Das, Amrita Halder & Sanjib Laha
+  </footer>
+
+  <!-- JS Slider -->
+ <script>
+  const images = [
+    'images/1.png',
+    'images/2.png',
+    'images/3.png',
+    'images/4.png',
+    'images/5.png',
+    'images/6.png'
+  ];
+  let i = 0;
+  const slideImage = document.getElementById('slideImage');
+
+  let slideInterval = setInterval(nextSlide, 3000);
+
+  function nextSlide() {
+    i = (i + 1) % images.length;
+    slideImage.src = images[i];
+  }
+
+  function prevSlide() {
+    i = (i - 1 + images.length) % images.length;
+    slideImage.src = images[i];
+  }
+
+  // reset interval on manual arrow click
+  document.querySelector('.arrow.left').addEventListener('click', () => {
+    clearInterval(slideInterval);
+    prevSlide();
+    slideInterval = setInterval(nextSlide, 3000);
+  });
+
+  document.querySelector('.arrow.right').addEventListener('click', () => {
+    clearInterval(slideInterval);
+    nextSlide();
+    slideInterval = setInterval(nextSlide, 3000);
+  });
+</script>
+
+</body>
+</html>

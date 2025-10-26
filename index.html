@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TrainSphere - Learn from Industry Experts</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/css/swiper.min.css" />
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -22,12 +23,97 @@
     </nav>
   </header>
 
-  <!-- Image Slider -->
-  <div class="slider">
-    <img id="slideImage" src="images/1.png" alt="Slide">
-    <button class="arrow left" onclick="prevSlide()">&#10094;</button>
-    <button class="arrow right" onclick="nextSlide()">&#10095;</button>
-  </div>
+
+  <section class="hero_slider">
+    <div class="swiper-container main-slider loading">
+      <div class="swiper-wrapper">
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/1.png)">
+            <img src="images/1.png" class="entity-img" />
+          </figure>
+        </div>
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/2.png)">
+            <img src="images/2.png" class="entity-img" />
+          </figure>
+        </div>
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/3.png)">
+            <img src="images/3.png" class="entity-img" />
+          </figure>
+        </div>
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/4.png)">
+            <img src="images/4.png" class="entity-img" />
+          </figure>
+        </div>
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/5.png)">
+            <img src="images/5.png" class="entity-img" />
+          </figure>
+        </div>
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/6.png)">
+            <img src="images/6.png" class="entity-img" />
+          </figure>
+        </div>
+
+      </div>
+
+      <div class="swiper-button-prev swiper-button-white"></div>
+      <div class="swiper-button-next swiper-button-white"></div>
+    </div>
+
+
+    <div class="swiper-container nav-slider loading">
+      <div class="swiper-wrapper" role="navigation">
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/1.png)">
+            <img src="images/1.png" class="entity-img" />
+          </figure>
+        </div>
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/2.png)">
+            <img src="images/2.png" class="entity-img" />
+          </figure>
+        </div>
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/3.png)">
+            <img src="images/3.png" class="entity-img" />
+          </figure>
+        </div>
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/4.png)">
+            <img src="images/4.png" class="entity-img" />
+          </figure>
+        </div>
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/5.png)">
+            <img src="images/5.png" class="entity-img" />
+          </figure>
+        </div>
+
+        <div class="swiper-slide">
+          <figure class="slide-bgimg" style="background-image:url(images/6.png)">
+            <img src="images/6.png" class="entity-img" />
+          </figure>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
 
   <!-- Hero Section -->
   <section class="hero">
@@ -163,43 +249,92 @@
     © 2025 <span>TrainSphere</span> | Founded by Sujatro Das, Amrita Halder & Sanjib Laha
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.min.js"></script>
+
   <!-- JS Slider -->
   <script>
-    const images = [
-      'images/1.png',
-      'images/2.png',
-      'images/3.png',
-      'images/4.png',
-      'images/5.png',
-      'images/6.png'
-    ];
-    let i = 0;
-    const slideImage = document.getElementById('slideImage');
+    // Params
+    let mainSliderSelector = ".main-slider",
+      navSliderSelector = ".nav-slider",
+      interleaveOffset = 0.5;
 
-    let slideInterval = setInterval(nextSlide, 3000);
+    // Main Slider
+    let mainSliderOptions = {
+      loop: true,
+      speed: 1000,
+      autoplay: {
+        delay: 3000
+      },
+      loopAdditionalSlides: 10,
+      grabCursor: true,
+      watchSlidesProgress: true,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev"
+      },
+      on: {
+        init: function () {
+          this.autoplay.stop();
+        },
+        imagesReady: function () {
+          this.el.classList.remove("loading");
+          this.autoplay.start();
+        },
+        progress: function () {
+          let swiper = this;
+          for (let i = 0; i < swiper.slides.length; i++) {
+            let slideProgress = swiper.slides[i].progress,
+              innerOffset = swiper.width * interleaveOffset,
+              innerTranslate = slideProgress * innerOffset;
 
-    function nextSlide() {
-      i = (i + 1) % images.length;
-      slideImage.src = images[i];
-    }
+            swiper.slides[i].querySelector(".slide-bgimg").style.transform =
+              "translateX(" + innerTranslate + "px)";
+          }
+        },
+        touchStart: function () {
+          let swiper = this;
+          for (let i = 0; i < swiper.slides.length; i++) {
+            swiper.slides[i].style.transition = "";
+          }
+        },
+        setTransition: function (speed) {
+          let swiper = this;
+          for (let i = 0; i < swiper.slides.length; i++) {
+            swiper.slides[i].style.transition = speed + "ms";
+            swiper.slides[i].querySelector(".slide-bgimg").style.transition =
+              speed + "ms";
+          }
+        }
+      }
+    };
+    let mainSlider = new Swiper(mainSliderSelector, mainSliderOptions);
 
-    function prevSlide() {
-      i = (i - 1 + images.length) % images.length;
-      slideImage.src = images[i];
-    }
+    // Navigation Slider
+    let navSliderOptions = {
+      loop: true,
+      loopAdditionalSlides: 10,
+      speed: 1000,
+      spaceBetween: 5,
+      slidesPerView: 5,
+      centeredSlides: true,
+      touchRatio: 0.2,
+      slideToClickedSlide: true,
+      direction: "vertical",
+      on: {
+        imagesReady: function () {
+          this.el.classList.remove("loading");
+        },
+        click: function () {
+          mainSlider.autoplay.stop();
+        }
+      }
+    };
+    let navSlider = new Swiper(navSliderSelector, navSliderOptions);
 
-    // reset interval on manual arrow click
-    document.querySelector('.arrow.left').addEventListener('click', () => {
-      clearInterval(slideInterval);
-      prevSlide();
-      slideInterval = setInterval(nextSlide, 3000);
-    });
+    // Matching sliders
+    mainSlider.controller.control = navSlider;
+    navSlider.controller.control = mainSlider;
 
-    document.querySelector('.arrow.right').addEventListener('click', () => {
-      clearInterval(slideInterval);
-      nextSlide();
-      slideInterval = setInterval(nextSlide, 3000);
-    });
   </script>
 
 </body>

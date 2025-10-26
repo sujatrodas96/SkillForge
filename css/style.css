@@ -74,7 +74,7 @@ nav ul li a:hover {
 .hero_slider .swiper-container.nav-slider {
   width: 20%;
   padding-left: 5px;
-}
+} 
 .hero_slider .swiper-container.nav-slider .swiper-slide {
   cursor: pointer;
   opacity: 0.4;

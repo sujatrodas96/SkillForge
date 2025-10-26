@@ -160,6 +160,11 @@ nav ul li a:hover {
     margin-top: 100px;
     text-align: center;
     padding: 60px 20px;
+    clear: both;
+}
+
+.form-check .form-check-input {
+	margin-left: 0;
 }
 
 .hero h1 {

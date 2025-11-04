@@ -7,7 +7,7 @@ pipeline {
     TF_DIR       = "terraform"
     SONAR_PROJECT_KEY = "skillforge"
     SONARQUBE_ENV     = "sonarqube-server"
-    AWS_REGION   = "ap-south-1"
+    AWS_REGION   = "us-east-1" 
   }
 
   stages {

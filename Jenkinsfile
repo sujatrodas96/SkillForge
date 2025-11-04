@@ -19,22 +19,26 @@ pipeline {
       }
     }
 
+
     stage('SonarQube Analysis') {
-      steps {
-        withSonarQubeEnv("${SONARQUBE_ENV}") {
-          withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
-            echo "Running SonarQube scan..."
-            sh '''
-              sonar-scanner \
-                -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                -Dsonar.sources=. \
-                -Dsonar.host.url=$SONAR_HOST_URL \
-                -Dsonar.login=$SONAR_TOKEN
-            '''
-          }
+        agent {
+            docker { image 'sonarsource/sonar-scanner-cli:latest' }
         }
-      }
+        steps {
+            withSonarQubeEnv("${SONARQUBE_ENV}") {
+            withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+                sh '''
+                sonar-scanner \
+                    -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=$SONAR_HOST_URL \
+                    -Dsonar.login=$SONAR_TOKEN
+                '''
+            }
+            }
+        }
     }
+
 
     stage('Quality Gate') {
       steps {

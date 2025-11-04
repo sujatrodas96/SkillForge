@@ -36,10 +36,11 @@ pipeline {
                     -Dsonar.token=$SONAR_TOKEN \
                     -Dsonar.userHome=$WORKSPACE/.sonar
                 '''
-            }
+                }
             }
         }
     }
+
 
 
 

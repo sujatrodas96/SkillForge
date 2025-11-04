@@ -19,55 +19,56 @@ pipeline {
       }
     }
 
-
-
     stage('SonarQube Analysis') {
-    agent {
-        docker { 
-            image 'sonarsource/sonar-scanner-cli:latest'
-            args '--network host'
+        agent {
+            docker { 
+                image 'sonarsource/sonar-scanner-cli:latest'
+                args '--network host'
+            }
         }
-    }
-    steps {
-        withSonarQubeEnv('sonarqube-server') {
-            withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
-                sh '''
-                sonar-scanner \
-                    -Dsonar.projectKey=skillforge \
-                    -Dsonar.sources=. \
-                    -Dsonar.host.url=http://localhost:9000 \
-                    -Dsonar.token=$SONAR_TOKEN \
-                    -Dsonar.userHome=$WORKSPACE/.sonar
-                '''
+        steps {
+            withSonarQubeEnv('sonarqube-server') {
+                withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
+                    sh '''
+                    sonar-scanner \
+                        -Dsonar.projectKey=skillforge \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.token=$SONAR_TOKEN \
+                        -Dsonar.userHome=$WORKSPACE/.sonar
+                    '''
+                }
             }
         }
     }
-}
-
-
-
 
     stage('Quality Gate') {
-    steps {
-        timeout(time: 10, unit: 'MINUTES') {  // Changed from 2 to 5 minutes
-            waitForQualityGate abortPipeline: true
+      steps {
+        timeout(time: 10, unit: 'MINUTES') {
+          script {
+            def qg = waitForQualityGate()
+            if (qg.status != 'OK') {
+              error "Pipeline aborted due to quality gate failure: ${qg.status}"
+            }
+          }
         }
+      }
     }
-}
 
     stage('Build Docker Image') {
       steps {
         echo "Building Docker image..."
         sh '''
-          cat > Dockerfile <<'DOCKERFILE'
-          FROM ubuntu:22.04
-          ENV DEBIAN_FRONTEND=noninteractive
-          RUN apt update && apt install -y nginx && apt clean
-          WORKDIR /var/www/html
-          COPY . /var/www/html
-          EXPOSE 80
-          CMD ["nginx", "-g", "daemon off;"]
-          DOCKERFILE
+          cat > Dockerfile <<EOF
+FROM ubuntu:22.04
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install -y nginx && apt clean
+WORKDIR /var/www/html
+RUN rm -rf /var/www/html/*
+COPY . /var/www/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+EOF
         '''
         sh '''
           docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .

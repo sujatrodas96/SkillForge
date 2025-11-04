@@ -19,7 +19,7 @@ variable "aws_secret_key" {
 variable "ami_id" {
   description = "Amazon Machine Image ID"
   type        = string
-  default     = "ami-0c02fb55956c7d316" # Ubuntu 22.04 (us-east-1)
+  default     = "ami-0dee22c13ea7a9a67" # Ubuntu 22.04 (us-east-1)
 }
 
 variable "instance_type" {

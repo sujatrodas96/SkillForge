@@ -118,24 +118,6 @@ EOF
       }
     }
 
-    stage('Terraform Destroy') {
-        steps {
-            dir('terraform') {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws-creds'
-                ]]) {
-                    sh '''
-                        terraform destroy -auto-approve \
-                        -var aws_access_key=$AWS_ACCESS_KEY_ID \
-                        -var aws_secret_key=$AWS_SECRET_ACCESS_KEY \
-                        -var aws_region=ap-south-1
-                    '''
-                }
-            }
-        }
-    }
-
 
     stage('Deploy Container to EC2') {
       steps {

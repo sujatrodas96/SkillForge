@@ -1,10 +1,16 @@
+provider "aws" {
+  region     = var.aws_region
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
+}
+
 resource "aws_instance" "skillforge_app" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  key_name      = var.key_pair_name
+  ami           = "ami-0c02fb55956c7d316"
+  instance_type = "t3.micro"
+  key_name      = var.key_name
 
   tags = {
-    Name = "SkillForgeApp"
+    Name = "SkillForge"
   }
 
   user_data = <<-EOF
@@ -12,9 +18,11 @@ resource "aws_instance" "skillforge_app" {
     sudo apt update -y
     sudo apt install -y docker.io
     sudo systemctl start docker
-    sudo systemctl enable docker
-
-    docker pull ${var.docker_image}
-    docker run -d -p 80:80 --name skillforge ${var.docker_image}
+    sudo docker run -d -p 80:80 sujatro123/skillforge:latest
   EOF
 }
+
+variable "aws_region" {}
+variable "aws_access_key" {}
+variable "aws_secret_key" {}
+variable "key_name" {}

@@ -29,11 +29,12 @@ variable "instance_type" {
 }
 
 variable "key_pair_name" {
-  description = "Key pair name for SSH"
+  description = "Key pair name for SSH access"
   type        = string
 }
 
 variable "docker_image" {
   description = "Docker image name to deploy"
   type        = string
+  default     = "sujatro123/skillforge:latest"
 }

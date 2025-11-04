@@ -22,11 +22,14 @@ pipeline {
 
 
     stage('SonarQube Analysis') {
-        agent {
-            docker { image 'sonarsource/sonar-scanner-cli:latest' }
+    agent {
+        docker { 
+            image 'sonarsource/sonar-scanner-cli:latest'
+            args '--network host'
         }
-        steps {
-            withSonarQubeEnv('sonarqube-server') {
+    }
+    steps {
+        withSonarQubeEnv('sonarqube-server') {
             withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
                 sh '''
                 sonar-scanner \
@@ -36,10 +39,10 @@ pipeline {
                     -Dsonar.token=$SONAR_TOKEN \
                     -Dsonar.userHome=$WORKSPACE/.sonar
                 '''
-                }
             }
         }
     }
+}
 
 
 

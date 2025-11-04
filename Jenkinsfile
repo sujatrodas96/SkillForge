@@ -20,24 +20,27 @@ pipeline {
     }
 
 
+
     stage('SonarQube Analysis') {
         agent {
             docker { image 'sonarsource/sonar-scanner-cli:latest' }
         }
         steps {
-            withSonarQubeEnv("${SONARQUBE_ENV}") {
+            withSonarQubeEnv('sonarqube-server') {
             withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
                 sh '''
                 sonar-scanner \
-                    -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                    -Dsonar.projectKey=skillforge \
                     -Dsonar.sources=. \
-                    -Dsonar.host.url=$SONAR_HOST_URL \
-                    -Dsonar.login=$SONAR_TOKEN
+                    -Dsonar.host.url=http://localhost:9000 \
+                    -Dsonar.token=$SONAR_TOKEN \
+                    -Dsonar.userHome=$WORKSPACE/.sonar
                 '''
             }
             }
         }
     }
+
 
 
     stage('Quality Gate') {

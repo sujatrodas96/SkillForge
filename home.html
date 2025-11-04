@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Primary Meta Tags -->
+    <title>Skill Forge — Free Learning Platform for Students | Coding, Career & Growth</title>
+    <meta name="title" content="Skill Forge — Free Learning Platform for Students | Coding, Career & Growth">
+    <meta name="description"
+        content="Skill Forge is a free learning platform for students to build coding skills, prepare for interviews, and grow their careers. 100% free, practical, and student-focused.">
+    <meta name="keywords"
+        content="free learning website for students, skill forge, coding for students, student learning platform, free coding site, learn programming free, skill development for students, online learning india, student career growth, free student resources">
+
+    <!-- Author & Robots -->
+    <meta name="author" content="Sujatro Das">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://skill-forge-seven.vercel.app/">
+    <meta property="og:title" content="Skill Forge — Learn, Build, and Grow for Free">
+    <meta property="og:description"
+        content="A free student learning platform to enhance coding skills, prepare for interviews, and explore new technologies.">
+    <meta property="og:image" content="https://skill-forge-seven.vercel.app/thumbnail.png">
+    <!-- Replace with your actual thumbnail URL -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://skill-forge-seven.vercel.app/">
+    <meta property="twitter:title" content="Skill Forge — Free Learning Platform for Students">
+    <meta property="twitter:description"
+        content="Free coding and skill-building platform for students. Build your career with hands-on practice and real projects.">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://skill-forge-seven.vercel.app/">
+    <meta name="google-site-verification" content="YfFweWhaOORRISNylfzy1vtHUJFckGV8-shUA13JL40" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            color: #fff;
+            padding-top: 80px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff59d;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: #fff;
+            font-size: 17px;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #fff59d;
+        }
+
+        .container {
+            max-width: 800px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h4 {
+            color: #0d47a1;
+            font-weight: 600;
+        }
+
+        .form-label {
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-control,
+        .form-select {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 15px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #1976d2;
+            box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.25);
+        }
+
+        .form-check {
+            padding: 8px 0;
+        }
+
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
+        .form-check-label {
+            color: #333;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1976d2, #0d47a1);
+            border: none;
+            padding: 12px 50px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(25, 118, 210, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        footer {
+            background: #051d4a;
+            text-align: center;
+            padding: 20px;
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        footer span {
+            color: #00bcd4;
+        }
+
+        .form-check .form-check-input {
+            margin-left: 0;
+        }
+    </style>
+    <script>
+        function homepage() {
+            window.location.href = "/";
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="logo" onclick="homepage()">SkillForge</div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="home.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="card shadow p-4">
+            <h4 class="mb-4 text-center">Student Registration Form</h4>
+            <form id="regForm">
+
+                <div class="mb-3">
+                    <label class="form-label">College Name *</label>
+                    <input type="text" name="entry.1109558153" id="college_name" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Student Name *</label>
+                    <input type="text" name="entry.232834648" id="student_name" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Stream *</label>
+                    <select name="entry.913532145" id="stream" class="form-select" required>
+                        <option value="">-- Select Stream --</option>
+                        <option value="Civil Engineering">Civil Engineering</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Electrical Engineering">Electrical Engineering</option>
+                        <option value="Electronics And TeleCommunication">Electronics And TeleCommunication</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Information Technology">Information Technology</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email *</label>
+                    <input type="email" name="entry.2037693996" id="email" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Phone No *</label>
+                    <input type="text" name="entry.1938780587" id="phone" class="form-control" maxlength="10" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Academic Year *</label>
+                    <select name="entry.1275159345" id="academic_year" class="form-select" required>
+                        <option value="">-- Select Year --</option>
+                        <option value="1st">1st</option>
+                        <option value="2nd">2nd</option>
+                        <option value="3rd">3rd</option>
+                        <option value="4th">4th</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Semester *</label>
+                    <select name="entry.462998437" id="semester" class="form-select" required>
+                        <option value="">-- Select Semester --</option>
+                        <option value="1st">1st</option>
+                        <option value="2nd">2nd</option>
+                        <option value="3rd">3rd</option>
+                        <option value="4th">4th</option>
+                        <option value="5th">5th</option>
+                        <option value="6th">6th</option>
+                        <option value="7th">7th</option>
+                        <option value="8th">8th</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Course Opting For (Select all that apply) *</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input course-checkbox" type="checkbox" name="entry.998189381"
+                                    value="PHP-Laravel" id="course1">
+                                <label class="form-check-label" for="course1">PHP-Laravel</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input course-checkbox" type="checkbox" name="entry.998189381"
+                                    value="Basic Frontend" id="course2">
+                                <label class="form-check-label" for="course2">Basic Frontend</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input course-checkbox" type="checkbox" name="entry.998189381"
+                                    value="Node.js" id="course3">
+                                <label class="form-check-label" for="course3">Node.js</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input course-checkbox" type="checkbox" name="entry.998189381"
+                                    value="React.js" id="course4">
+                                <label class="form-check-label" for="course4">React.js</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input course-checkbox" type="checkbox" name="entry.998189381"
+                                    value="AI/ML" id="course5">
+                                <label class="form-check-label" for="course5">AI/ML</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input course-checkbox" type="checkbox" name="entry.998189381"
+                                    value="DevOps" id="course6">
+                                <label class="form-check-label" for="course6">DevOps</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input course-checkbox" type="checkbox" name="entry.998189381"
+                                    value="Business & Soft Skills" id="course7">
+                                <label class="form-check-label" for="course7">Business & Soft Skills</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary px-4">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div style="margin-bottom: 15px;">
+            <strong style="color: #fff59d; font-size: 16px;">For More Details, Feel Free to Connect</strong>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <span style="color: #fff;">📞 Phone: </span>
+            <a href="tel:6289126819" style="color: #00bcd4; margin-right: 15px;">6289126819</a>
+            <span style="color: #fff;">/</span>
+            <a href="tel:9051986680" style="color: #00bcd4; margin-left: 15px;">90519 86680</a>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <span style="color: #fff;">📧 Email: </span>
+            <a href="mailto:sujatro.das96@gmail.com"
+                style="color: #00bcd4; margin-right: 15px;">sujatro.das96@gmail.com</a>
+            <span style="color: #fff;">/</span>
+            <a href="mailto:amrita.halder@gmail.com"
+                style="color: #00bcd4; margin-left: 15px;">amrita.halder@gmail.com</a>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; margin-top: 15px;">
+            © 2025 <span>SkillForge</span> | Founded by Sujatro Das, Amrita Halder 
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('regForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const form = document.getElementById("regForm");
+            const textFields = ["college_name", "student_name", "email", "phone"];
+            const selectFields = ["stream", "academic_year", "semester"];
+
+            // Validate text fields
+            for (let id of textFields) {
+                const field = document.getElementById(id);
+                if (!field.value.trim()) {
+                    alert("Please fill in " + field.previousElementSibling.textContent);
+                    field.focus();
+                    return false;
+                }
+            }
+
+            // Validate dropdown fields
+            for (let id of selectFields) {
+                const field = document.getElementById(id);
+                if (!field.value) {
+                    alert("Please select " + field.previousElementSibling.textContent);
+                    field.focus();
+                    return false;
+                }
+            }
+
+            // Validate at least one course is selected
+            const checkedCourses = document.querySelectorAll('.course-checkbox:checked');
+            if (checkedCourses.length === 0) {
+                alert("Please select at least one course!");
+                return false;
+            }
+
+            // Email validation
+            const email = document.getElementById("email").value;
+            if (!/^\S+@\S+\.\S+$/.test(email)) {
+                alert("Please enter a valid email address!");
+                document.getElementById("email").focus();
+                return false;
+            }
+
+            // Phone validation
+            const phone = document.getElementById("phone").value;
+            if (!/^\d{10}$/.test(phone)) {
+                alert("Please enter a valid 10-digit phone number!");
+                document.getElementById("phone").focus();
+                return false;
+            }
+
+            // Submit via API
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Submitting...";
+
+            try {
+                const response = await fetch("/api/submit", {
+                    method: "POST",
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert("Registration successful!");
+                    window.location.href = "/thank-you.html";
+                } else {
+                    alert("Something went wrong! Please try again.");
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Submit";
+                }
+            } catch (error) {
+                alert("Network error! Please check your connection.");
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit";
+            }
+        });
+    </script>
+</body>
+
+</html>

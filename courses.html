@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Primary Meta Tags -->
+    <title>Skill Forge — Free Learning Platform for Students | Coding, Career & Growth</title>
+    <meta name="title" content="Skill Forge — Free Learning Platform for Students | Coding, Career & Growth">
+    <meta name="description"
+        content="Skill Forge is a free learning platform for students to build coding skills, prepare for interviews, and grow their careers. 100% free, practical, and student-focused.">
+    <meta name="keywords"
+        content="free learning website for students, skill forge, coding for students, student learning platform, free coding site, learn programming free, skill development for students, online learning india, student career growth, free student resources">
+
+    <!-- Author & Robots -->
+    <meta name="author" content="Sujatro Das">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://skill-forge-seven.vercel.app/">
+    <meta property="og:title" content="Skill Forge — Learn, Build, and Grow for Free">
+    <meta property="og:description" content="A free student learning platform to enhance coding skills, prepare for interviews, and explore new technologies.">
+    <!-- Replace with your actual thumbnail URL -->
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://skill-forge-seven.vercel.app/">
+    <meta property="twitter:title" content="Skill Forge — Free Learning Platform for Students">
+    <meta property="twitter:description"
+        content="Free coding and skill-building platform for students. Build your career with hands-on practice and real projects.">
+    <meta property="twitter:image" content="https://skill-forge-seven.vercel.app/thumbnail.png">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://skill-forge-seven.vercel.app/">
+    <meta name="google-site-verification" content="YfFweWhaOORRISNylfzy1vtHUJFckGV8-shUA13JL40" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            color: #fff;
+            padding-top: 80px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff59d;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: #fff;
+            font-size: 17px;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #fff59d;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-title h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #fff59d;
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            font-size: 18px;
+            color: #e3f2fd;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #1976d2;
+        }
+
+        .course-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0d47a1;
+        }
+
+        .course-duration {
+            background: linear-gradient(135deg, #1976d2, #0d47a1);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .course-content {
+            color: #333;
+        }
+
+        .month-section {
+            margin-bottom: 20px;
+        }
+
+        .month-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1976d2;
+            margin-bottom: 8px;
+        }
+
+        .month-topics {
+            color: #555;
+            line-height: 1.8;
+            padding-left: 20px;
+        }
+
+        .fees-section {
+            background: #f5f5f5;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #1976d2;
+        }
+
+        .fees-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #0d47a1;
+            margin-bottom: 10px;
+        }
+
+        .fees-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1976d2;
+        }
+
+        .fees-note {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        footer {
+            background: #051d4a;
+            text-align: center;
+            padding: 20px;
+            color: #ccc;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+
+        footer span {
+            color: #00bcd4;
+        }
+
+        footer a {
+            color: #00bcd4;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #fff59d;
+        }
+    </style>
+    <script>
+        function homepage() {
+            window.location.href = "/";
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="logo" onclick="homepage()">SkillForge</div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="home.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-title">
+            <h1>Our Training Courses</h1>
+            <p>Comprehensive industry-oriented programs designed to make you job-ready</p>
+        </div>
+
+        <!-- Basic Frontend Course -->
+        <div class="course-card">
+            <div class="course-header">
+                <h2 class="course-title">Basic Frontend Development</h2>
+                <span class="course-duration">2-3 Months</span>
+            </div>
+            <div class="course-content">
+                <div class="month-section">
+                    <h3 class="month-title">Month 1: HTML & CSS Fundamentals</h3>
+                    <p class="month-topics">HTML5 structure and semantic tags, CSS styling and layouts, Flexbox and Grid
+                        systems, Responsive design principles, Forms and validation, CSS animations and transitions</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 2: JavaScript Basics</h3>
+                    <p class="month-topics">JavaScript fundamentals and ES6+ features, DOM manipulation, Events and
+                        event handling, Asynchronous JavaScript (Promises, Async/Await), API integration and Fetch,
+                        Basic project development</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 3: Advanced Topics & Projects</h3>
+                    <p class="month-topics">Bootstrap framework, Git and GitHub, Portfolio website development,
+                        Real-world projects, Deployment and hosting, Interview preparation</p>
+                </div>
+                <div class="fees-section">
+                    <div class="fees-title">Course Fees</div>
+                    <div class="fees-amount">₹ TBA</div>
+                    <div class="fees-note">Contact us for current pricing and payment plans</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Node.js Course -->
+        <div class="course-card">
+            <div class="course-header">
+                <h2 class="course-title">Node.js Backend Development</h2>
+                <span class="course-duration">3 Months</span>
+            </div>
+            <div class="course-content">
+                <div class="month-section">
+                    <h3 class="month-title">Month 1: Node.js Fundamentals</h3>
+                    <p class="month-topics">JavaScript ES6+ advanced concepts, Node.js core modules and npm, File system
+                        operations, Event-driven architecture, Asynchronous programming patterns, Building CLI
+                        applications</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 2: Express.js & Database</h3>
+                    <p class="month-topics">Express.js framework, RESTful API design and development, MongoDB database
+                        integration, Mongoose ODM, CRUD operations, Authentication and authorization (JWT), Middleware
+                        and error handling</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 3: Advanced Topics & Deployment</h3>
+                    <p class="month-topics">Security best practices, File uploads and image processing, Real-time
+                        applications with Socket.io, Testing with Jest, API documentation, Docker basics, Deployment on
+                        cloud platforms (AWS/Heroku), Final project development</p>
+                </div>
+                <div class="fees-section">
+                    <div class="fees-title">Course Fees</div>
+                    <div class="fees-amount">₹ TBA</div>
+                    <div class="fees-note">Contact us for current pricing and payment plans</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- React.js Course -->
+        <div class="course-card">
+            <div class="course-header">
+                <h2 class="course-title">React.js Frontend Development</h2>
+                <span class="course-duration">4-5 Months</span>
+            </div>
+            <div class="course-content">
+                <div class="month-section">
+                    <h3 class="month-title">Month 1: JavaScript & React Basics</h3>
+                    <p class="month-topics">Advanced JavaScript concepts, React introduction and setup, JSX syntax,
+                        Components (Functional & Class), Props and State management, Event handling, Conditional
+                        rendering</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 2: React Hooks & Lifecycle</h3>
+                    <p class="month-topics">React Hooks (useState, useEffect, useContext), Component lifecycle, Forms
+                        and controlled components, Lists and keys, Styling in React (CSS Modules, Styled Components),
+                        React Router for navigation</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 3: State Management & API Integration</h3>
+                    <p class="month-topics">Context API, Redux fundamentals, Redux Toolkit, API integration with Axios,
+                        Custom hooks development, Performance optimization, Code splitting and lazy loading</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 4: Advanced React & Testing</h3>
+                    <p class="month-topics">TypeScript with React, React Testing Library, Jest for unit testing, Error
+                        boundaries, Higher Order Components (HOC), Render props pattern, Authentication implementation,
+                        Progressive Web Apps (PWA)</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 5: Projects & Deployment</h3>
+                    <p class="month-topics">Full-stack project with React and Node.js, E-commerce application, Social
+                        media dashboard, Deployment on Vercel/Netlify, CI/CD pipeline, Portfolio development, Interview
+                        preparation</p>
+                </div>
+                <div class="fees-section">
+                    <div class="fees-title">Course Fees</div>
+                    <div class="fees-amount">₹ TBA</div>
+                    <div class="fees-note">Contact us for current pricing and payment plans</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHP-Laravel Course -->
+        <div class="course-card">
+            <div class="course-header">
+                <h2 class="course-title">PHP-Laravel Full Stack Development</h2>
+                <span class="course-duration">5-6 Months</span>
+            </div>
+            <div class="course-content">
+                <div class="month-section">
+                    <h3 class="month-title">Month 1: PHP Fundamentals</h3>
+                    <p class="month-topics">PHP basics and syntax, Variables, data types, and operators, Control
+                        structures and loops, Functions and arrays, Form handling and validation, File operations,
+                        Session and cookies</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 2: Advanced PHP & MySQL</h3>
+                    <p class="month-topics">Object-Oriented Programming in PHP, MySQL database design, CRUD operations
+                        with MySQL, PDO and MySQLi, SQL joins and relationships, Security (SQL injection prevention),
+                        Error handling and debugging</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 3: Laravel Framework Basics</h3>
+                    <p class="month-topics">Laravel installation and setup, MVC architecture, Routing and controllers,
+                        Blade templating engine, Database migrations and seeders, Eloquent ORM, Query builder</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 4: Laravel Advanced Features</h3>
+                    <p class="month-topics">Relationships (One-to-Many, Many-to-Many), Authentication and authorization,
+                        Middleware, Form requests and validation, File uploads and storage, RESTful APIs development,
+                        Laravel Sanctum for API authentication</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 5: Advanced Laravel & Integration</h3>
+                    <p class="month-topics">Laravel queues and jobs, Email notifications, Payment gateway integration
+                        (Stripe/Razorpay), Laravel packages and Composer, Testing with PHPUnit, Artisan commands, Event
+                        and listeners</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 6: Projects & Deployment</h3>
+                    <p class="month-topics">Complete CMS development, E-commerce platform, Blog application with admin
+                        panel, API development for mobile apps, Deployment on shared hosting/VPS, Version control with
+                        Git, Final project and portfolio</p>
+                </div>
+                <div class="fees-section">
+                    <div class="fees-title">Course Fees</div>
+                    <div class="fees-amount">₹ TBA</div>
+                    <div class="fees-note">Contact us for current pricing and payment plans</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DevOps Course -->
+        <div class="course-card">
+            <div class="course-header">
+                <h2 class="course-title">DevOps Engineering</h2>
+                <span class="course-duration">4-5 Months</span>
+            </div>
+            <div class="course-content">
+                <div class="month-section">
+                    <h3 class="month-title">Month 1: Linux & Version Control</h3>
+                    <p class="month-topics">Linux fundamentals and command line, Shell scripting basics, File
+                        permissions and user management, Git and GitHub advanced concepts, Branching strategies,
+                        Collaborative workflows</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 2: Containerization & Docker</h3>
+                    <p class="month-topics">Docker fundamentals, Images and containers, Dockerfile creation, Docker
+                        Compose, Container networking, Volume management, Multi-container applications, Docker Hub and
+                        registries</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 3: Kubernetes & Orchestration</h3>
+                    <p class="month-topics">Kubernetes architecture, Pods, Services, and Deployments, ConfigMaps and
+                        Secrets, Persistent volumes, Ingress controllers, Helm package manager, Kubernetes monitoring
+                    </p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 4: CI/CD & Automation</h3>
+                    <p class="month-topics">Jenkins setup and configuration, CI/CD pipeline creation, GitLab CI/CD,
+                        GitHub Actions, Infrastructure as Code (Terraform basics), Ansible for configuration management,
+                        Automated testing integration</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 5: Cloud & Monitoring</h3>
+                    <p class="month-topics">AWS fundamentals (EC2, S3, RDS), Cloud deployment strategies, Monitoring
+                        with Prometheus and Grafana, Log management (ELK Stack), Security best practices, Backup and
+                        disaster recovery, Real-world DevOps projects</p>
+                </div>
+                <div class="fees-section">
+                    <div class="fees-title">Course Fees</div>
+                    <div class="fees-amount">₹ TBA</div>
+                    <div class="fees-note">Contact us for current pricing and payment plans</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI/ML Course -->
+        <div class="course-card">
+            <div class="course-header">
+                <h2 class="course-title">Artificial Intelligence & Machine Learning</h2>
+                <span class="course-duration">4-5 Months</span>
+            </div>
+            <div class="course-content">
+                <div class="month-section">
+                    <h3 class="month-title">Month 1: Python & Data Science Basics</h3>
+                    <p class="month-topics">Python programming fundamentals, NumPy for numerical computing, Pandas for
+                        data manipulation, Data visualization (Matplotlib, Seaborn), Jupyter Notebook, Statistics and
+                        probability basics</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 2: Machine Learning Fundamentals</h3>
+                    <p class="month-topics">Introduction to Machine Learning, Supervised vs Unsupervised learning,
+                        Linear and Logistic Regression, Decision Trees and Random Forests, Support Vector Machines,
+                        Model evaluation metrics, Train-test split and cross-validation</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 3: Advanced ML & Deep Learning</h3>
+                    <p class="month-topics">Ensemble methods (Bagging, Boosting), Neural Networks fundamentals,
+                        TensorFlow and Keras, Deep Learning architectures, Convolutional Neural Networks (CNN), Image
+                        classification projects, Transfer learning</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 4: NLP & Advanced Topics</h3>
+                    <p class="month-topics">Natural Language Processing basics, Text preprocessing and tokenization,
+                        Recurrent Neural Networks (RNN, LSTM), Sentiment analysis, Recommendation systems, Time series
+                        analysis, Model deployment basics</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Month 5: Projects & Deployment</h3>
+                    <p class="month-topics">End-to-end ML project development, Real-world datasets and Kaggle
+                        competitions, Model optimization and tuning, Flask API for model deployment, MLOps basics,
+                        Portfolio projects (Image classifier, Chatbot, Prediction system), Interview preparation</p>
+                </div>
+                <div class="fees-section">
+                    <div class="fees-title">Course Fees</div>
+                    <div class="fees-amount">₹ TBA</div>
+                    <div class="fees-note">Contact us for current pricing and payment plans</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business & Soft Skills Course -->
+        <div class="course-card">
+            <div class="course-header">
+                <h2 class="course-title">Business & Soft Skills</h2>
+                <span class="course-duration">1 Month</span>
+            </div>
+            <div class="course-content">
+                <div class="month-section">
+                    <h3 class="month-title">Week 1: Communication & Presentation Skills</h3>
+                    <p class="month-topics">Effective communication techniques, Public speaking fundamentals,
+                        Presentation skills and PowerPoint mastery, Body language and confidence building, Email
+                        etiquette and professional writing</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Week 2: Professional Development</h3>
+                    <p class="month-topics">Resume building and LinkedIn optimization, Interview preparation and mock
+                        interviews, Time management and productivity, Professional networking, Personal branding</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Week 3: Leadership & Teamwork</h3>
+                    <p class="month-topics">Leadership fundamentals, Team collaboration and conflict resolution,
+                        Problem-solving and critical thinking, Decision-making skills, Emotional intelligence</p>
+                </div>
+                <div class="month-section">
+                    <h3 class="month-title">Week 4: Business Basics & Career Growth</h3>
+                    <p class="month-topics">Business communication, Client handling and customer service, Project
+                        management basics, Entrepreneurship mindset, Career planning and goal setting, Industry insights
+                        and trends</p>
+                </div>
+                <div class="fees-section">
+                    <div class="fees-title">Course Fees</div>
+                    <div class="fees-amount">₹ TBA</div>
+                    <div class="fees-note">Contact us for current pricing and payment plans</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div style="margin-bottom: 15px;">
+            <strong style="color: #fff59d; font-size: 16px;">For More Details, Feel Free to Connect</strong>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <span style="color: #fff;">📞 Phone: </span>
+            <a href="tel:6289126819" style="color: #00bcd4; margin-right: 15px;">6289126819</a>
+            <span style="color: #fff;">/</span>
+            <a href="tel:9051986680" style="color: #00bcd4; margin-left: 15px;">90519 86680</a>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <span style="color: #fff;">📧 Email: </span>
+            <a href="mailto:sujatro.das96@gmail.com"
+                style="color: #00bcd4; margin-right: 15px;">sujatro.das96@gmail.com</a>
+            <span style="color: #fff;">/</span>
+            <a href="mailto:amrita.halder@gmail.com"
+                style="color: #00bcd4; margin-left: 15px;">amrita.halder@gmail.com</a>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px; margin-top: 15px;">
+            © 2025 <span>SkillForge</span> | Founded by Sujatro Das, Amrita Halder 
+        </div>
+    </footer>
+</body>
+
+</html>

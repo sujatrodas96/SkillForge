@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Primary Meta Tags -->
+  <title>Skill Forge — Free Learning Platform for Students | Coding, Career & Growth</title>
+  <meta name="title" content="Skill Forge — Free Learning Platform for Students | Coding, Career & Growth">
+  <meta name="description"
+    content="Skill Forge is a free learning platform for students to build coding skills, prepare for interviews, and grow their careers. 100% free, practical, and student-focused.">
+  <meta name="keywords"
+    content="free learning website for students, skill forge, coding for students, student learning platform, free coding site, learn programming free, skill development for students, online learning india, student career growth, free student resources">
+
+  <!-- Author & Robots -->
+  <meta name="author" content="Sujatro Das">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://skill-forge-seven.vercel.app/">
+  <meta property="og:title" content="Skill Forge — Learn, Build, and Grow for Free">
+  <meta property="og:description" content="A free student learning platform to enhance coding skills, prepare for interviews, and explore new technologies.">
+  <!-- Replace with your actual thumbnail URL -->
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://skill-forge-seven.vercel.app/">
+  <meta property="twitter:title" content="Skill Forge — Free Learning Platform for Students">
+  <meta property="twitter:description"
+    content="Free coding and skill-building platform for students. Build your career with hands-on practice and real projects.">
+  <meta property="twitter:image" content="https://skill-forge-seven.vercel.app/thumbnail.png">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://skill-forge-seven.vercel.app/">
+  <meta name="google-site-verification" content="YfFweWhaOORRISNylfzy1vtHUJFckGV8-shUA13JL40" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0d47a1, #1976d2);
+      color: #fff;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(0, 0, 0, 0.2);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff59d;
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    nav ul li a {
+      color: #fff;
+      font-size: 17px;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #fff59d;
+    }
+
+    .hero {
+      margin-top: 100px;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .hero h1 {
+      font-size: 45px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #fff59d;
+    }
+
+    .hero p {
+      font-size: 18px;
+      max-width: 700px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+
+    .section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .section h2 {
+      font-size: 36px;
+      margin-bottom: 30px;
+      color: #fff59d;
+    }
+
+    /* Founders Cards */
+    .founders {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .founder-card {
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+      padding: 20px;
+      width: 250px;
+      transition: transform 0.3s;
+    }
+
+    .founder-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .founder-card img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      border: 3px solid #fff59d;
+    }
+
+    .founder-card h3 {
+      color: #fff59d;
+      margin-bottom: 8px;
+    }
+
+    .founder-card p {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* Mission & Vision */
+    .mission-vision {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    .mission,
+    .vision {
+      flex: 1 1 300px;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+      padding: 30px;
+      text-align: left;
+      min-width: 280px;
+    }
+
+    .mission h3,
+    .vision h3 {
+      color: #fff59d;
+      margin-bottom: 15px;
+    }
+
+    .mission p,
+    .vision p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    footer {
+      background: #051d4a;
+      text-align: center;
+      padding: 20px;
+      color: #ccc;
+      font-size: 14px;
+      margin-top: 50px;
+    }
+
+    footer span {
+      color: #00bcd4;
+    }
+
+    /* Responsive */
+    @media (max-width:768px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .founders,
+      .mission-vision {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+  <script>
+    function homepage() {
+      window.location.href = "/";
+    }
+  </script>
+</head>
+
+<body>
+
+  <!-- Header / Navbar -->
+  <header>
+    <div class="logo" onclick="homepage()">SkillForge</div>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="home.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>About SkillForge</h1>
+    <p>Our mission is to empower college students with practical IT skills taught by industry experts. We bridge the gap
+      between academics and the professional world.</p>
+  </section>
+
+  <!-- Founders Section -->
+  <section class="section">
+    <h2>Meet Our Founders</h2>
+    <div class="founders">
+      <div class="founder-card">
+        <img src="images/sujatro.jpeg" alt="Sujatro Das">
+        <h3>Sujatro Das</h3>
+        <p>Passionate about technology education, Sujatro brings hands-on coding expertise to SkillForge courses.</p>
+      </div>
+      <div class="founder-card">
+        <img src="images/amrita.png" alt="Amrita Halder">
+        <h3>Amrita Halder</h3>
+        <p>Professional Project Manager with 10+ years of experience managing diverse projects delivering value driven solutions to over 50+ clients across reputed organizations. Passionate about mentoring future leaders.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & Vision Section -->
+  <section class="section mission-vision">
+    <div class="mission">
+      <h3>Our Mission</h3>
+      <p>To provide affordable, industry-driven technical courses for college students, helping them gain practical
+        skills and launch their IT careers successfully.</p>
+    </div>
+    <div class="vision">
+      <h3>Our Vision</h3>
+      <p>To become a leading platform for practical IT education in India, bridging the gap between academia and the
+        professional world.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 <span>SkillForge</span> | Founded by Sujatro Das, Amrita Halder 
+  </footer>
+
+</body>
+
+</html>

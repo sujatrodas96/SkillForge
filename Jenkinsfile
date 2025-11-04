@@ -95,7 +95,8 @@ EOF
           withCredentials([
             string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY'),
             string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_KEY'),
-            string(credentialsId: 'AWS_KEY_NAME', variable: 'AWS_KEY_NAME')
+            string(credentialsId: 'AWS_KEY_NAME', variable: 'AWS_KEY_NAME'),
+            usernamePassword(credentialsId: 'dockerhub-cred', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')
           ]) {
             sh '''
               export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY}"
@@ -105,8 +106,9 @@ EOF
               terraform apply -auto-approve \
                 -var "aws_access_key=${AWS_ACCESS_KEY}" \
                 -var "aws_secret_key=${AWS_SECRET_KEY}" \
-                -var "key_name=${AWS_KEY_NAME}" \
-                -var "aws_region=${AWS_REGION}"
+                -var "key_pair_name=${AWS_KEY_NAME}" \
+                -var "aws_region=${AWS_REGION}" \
+                -var "docker_image=${DOCKER_USER}/${IMAGE_NAME}:${IMAGE_TAG}"
             '''
           }
         }

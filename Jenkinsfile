@@ -2,13 +2,14 @@ pipeline {
   agent any
 
   environment {
-    IMAGE_NAME   = "skillforge"
+    IMAGE_NAME   = "skillforge-new-container"
     IMAGE_TAG    = "latest"
     TF_DIR       = "terraform"
-    SONAR_PROJECT_KEY = "skillforge"
+    SONAR_PROJECT_KEY = "skillforge-new"
     SONARQUBE_ENV     = "sonarqube-server"
     AWS_REGION   = "ap-south-1"
   }
+
 
   stages {
 
@@ -44,7 +45,7 @@ pipeline {
 
     stage('Quality Gate') {
       steps {
-        timeout(time: 30, unit: 'MINUTES') {
+        timeout(time: 10, unit: 'MINUTES') {
           script {
             def qg = waitForQualityGate()
             if (qg.status != 'OK') {
@@ -60,15 +61,15 @@ pipeline {
         echo "Building Docker image..."
         sh '''
           cat > Dockerfile <<EOF
-FROM ubuntu:22.04
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt update && apt install -y nginx && apt clean
-WORKDIR /var/www/html
-RUN rm -rf /var/www/html/*
-COPY . /var/www/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-EOF
+            FROM ubuntu:22.04
+            ENV DEBIAN_FRONTEND=noninteractive
+            RUN apt update && apt install -y nginx && apt clean
+            WORKDIR /var/www/html
+            RUN rm -rf /var/www/html/*
+            COPY . /var/www/html
+            EXPOSE 80
+            CMD ["nginx", "-g", "daemon off;"]
+            EOF
         '''
         sh '''
           docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .

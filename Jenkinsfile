@@ -6,7 +6,7 @@ pipeline {
     IMAGE_TAG    = "latest"
     TF_DIR       = "terraform"
     SONAR_PROJECT_KEY = "skillforge-new"
-    SONARQUBE_ENV     = "sonarqube-server"
+    SONARQUBE_ENV     = "sonarqube-server-new"
     AWS_REGION   = "ap-south-1"
   }
 

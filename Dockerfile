@@ -1,15 +1,20 @@
-FROM ubuntu:22.04
+# Use Node.js LTS base image
+FROM node:18
 
-ENV DEBIAN_FRONTEND=noninteractive
+# Set working directory
+WORKDIR /app
 
-RUN apt update && apt install -y nginx && apt clean
+# Copy package files
+COPY package*.json ./
 
-WORKDIR /var/www/html
+# Install dependencies
+RUN npm install
 
-RUN rm -rf /var/www/html/*
+# Copy the rest of the source code
+COPY . .
 
-COPY . /var/www/html
+# Expose port (adjust if different)
+EXPOSE 3000
 
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Start the application
+CMD ["npm", "start"]

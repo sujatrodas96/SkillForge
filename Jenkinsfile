@@ -48,9 +48,9 @@ pipeline {
           script {
             def qg = waitForQualityGate()
             if (qg.status != 'OK') {
-              echo "⚠️ Quality Gate failed with status: ${qg.status}, continuing pipeline for testing..."
+              echo "Quality Gate failed with status: ${qg.status}, continuing pipeline for testing..."
             } else {
-              echo "✅ Quality Gate passed successfully."
+              echo "Quality Gate passed successfully."
             }
           }
         }

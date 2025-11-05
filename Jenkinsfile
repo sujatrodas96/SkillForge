@@ -43,19 +43,19 @@ pipeline {
     }
 
     stage('Quality Gate') {
-  steps {
-    timeout(time: 10, unit: 'MINUTES') {
-      script {
-        def qg = waitForQualityGate()
-        if (qg.status != 'OK') {
-          echo "⚠️ Quality Gate failed with status: ${qg.status}, continuing pipeline for testing..."
-        } else {
-          echo "✅ Quality Gate passed successfully."
+      steps {
+        timeout(time: 10, unit: 'MINUTES') {
+          script {
+            def qg = waitForQualityGate()
+            if (qg.status != 'OK') {
+              echo "⚠️ Quality Gate failed with status: ${qg.status}, continuing pipeline for testing..."
+            } else {
+              echo "✅ Quality Gate passed successfully."
+            }
+          }
         }
       }
     }
-  }
-}
 
 
     stage('Build Docker Image') {
@@ -63,15 +63,15 @@ pipeline {
         echo "Building Docker image..."
         sh '''
           cat > Dockerfile <<EOF
-FROM ubuntu:22.04
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt update && apt install -y nginx && apt clean
-WORKDIR /var/www/html
-RUN rm -rf /var/www/html/*
-COPY . /var/www/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-EOF
+          FROM ubuntu:22.04
+          ENV DEBIAN_FRONTEND=noninteractive
+          RUN apt update && apt install -y nginx && apt clean
+          WORKDIR /var/www/html
+          RUN rm -rf /var/www/html/*
+          COPY . /var/www/html
+          EXPOSE 80
+          CMD ["nginx", "-g", "daemon off;"]
+          EOF
         '''
         sh '''
           docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
@@ -145,16 +145,16 @@ EOF
     }
   }
 
-  post {
-    always {
-      echo 'Cleaning up temporary Docker sessions...'
-      sh 'docker logout 2>/dev/null || true'
-    }
-    success {
-      echo 'Deployment successful! App is live on EC2.'
-    }
-    failure {
-      echo 'Pipeline failed. Check the logs above for details.'
+    post {
+      always {
+        echo 'Cleaning up temporary Docker sessions...'
+        sh 'docker logout 2>/dev/null || true'
+      }
+      success {
+        echo 'Deployment successful! App is live on EC2.'
+      }
+      failure {
+        echo 'Pipeline failed. Check the logs above for details.'
+      }
     }
   }
-}

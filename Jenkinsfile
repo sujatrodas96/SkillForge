@@ -6,7 +6,7 @@ pipeline {
         IMAGE_TAG        = "latest"
         TF_DIR           = "terraform"
         AWS_REGION       = "us-east-1"
-        PROMETHEUS_HOST  = "34.236.171.40"
+        PROMETHEUS_HOST  = "100.28.131.60"
         APP_EC2_KEY      = "ec2-ssh-key"
         DOCKER_CRED_ID   = "dockerhub-cred"
     }

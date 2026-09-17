@@ -34,14 +34,26 @@ pipeline {
          */
         stage('Validate Project') {
             steps {
-
                 sh '''
-                    echo "Checking project structure..."
+                    echo "======================================"
+                    echo "Checking project structure"
+                    echo "======================================"
 
+                    pwd
+
+                    echo ""
+                    echo "Files in workspace:"
+                    ls -la
+
+                    echo ""
+                    echo "Checking Dockerfile..."
                     test -f Dockerfile
-                    test -d SkillForge
-                    test -f SkillForge/index.html
 
+                    echo ""
+                    echo "Checking index.html..."
+                    test -f index.html
+
+                    echo ""
                     echo "Project validation successful."
                 '''
             }

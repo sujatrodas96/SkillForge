@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: skillforge-api
-          image: sujatro123/skillforge-api:latest
+          image: sujatro123/skillforge:latest
 
           ports:
             - containerPort: 3000

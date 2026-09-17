@@ -1,20 +1,7 @@
-# Use Node.js LTS base image
-FROM node:18
+FROM nginx:alpine
 
-# Set working directory
-WORKDIR /app
+COPY SkillForge/ /usr/share/nginx/html/
 
-# Copy package files
-COPY package*.json ./
+EXPOSE 80
 
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the source code
-COPY . .
-
-# Expose port (adjust if different)
-EXPOSE 3000
-
-# Start the application
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]

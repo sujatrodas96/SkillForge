@@ -30,23 +30,11 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
 
-      - name: Verify Docker Hub username
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        env:
-          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
-        run: |
-          if [ -z "$DOCKERHUB_USERNAME" ]; then
-            echo "Docker Hub username is missing"
-            exit 1
-          else
-            echo "Docker Hub username is configured"
-          fi
-
       - name: Login to Docker Hub
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: docker/login-action@v4
         with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
+          username: 'sujatro123'
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and Push
@@ -55,4 +43,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/skillforge:v2
+          tags: sujatro123/skillforge:v2

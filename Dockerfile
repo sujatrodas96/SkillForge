@@ -1,5 +1,5 @@
 FROM nginx:alpine
-# Update Alpine packages and security patches
+
 RUN apk update && apk upgrade --no-cache
 
 COPY . /usr/share/nginx/html/

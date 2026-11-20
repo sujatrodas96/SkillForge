@@ -25,7 +25,7 @@ jobs:
     name: Terraform
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    environment: production # add required reviewers in repo settings for approval
+    environment: production 
     defaults:
       run:
         working-directory: ./infra

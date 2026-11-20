@@ -23,9 +23,6 @@ env:
   AWS_ROLE_ARN: arn:aws:iam::490164024161:role/GitHubActions-Terraform-Role
 
 jobs:
-  # ---------------------------------------------------------------
-  # 1. Infrastructure (Terraform)
-  # ---------------------------------------------------------------
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
@@ -52,8 +49,6 @@ jobs:
         with:
           terraform_version: 1.10.5
 
-      # SUBNET_IDS can be "subnet-a,subnet-b", "[subnet-a, subnet-b]" or
-      # '["subnet-a","subnet-b"]'. Terraform needs a valid list(string).
       - name: Format subnet IDs for Terraform
         env:
           SUBNET_IDS_RAW: ${{ secrets.SUBNET_IDS }}
@@ -70,8 +65,6 @@ jobs:
           ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
           echo "name=tfstate-${ACCOUNT_ID}-${AWS_REGION}" >> "$GITHUB_OUTPUT"
 
-      # First run only: create the bucket through module.s3 using local state,
-      # then migrate that state into the new bucket.
       - name: Bootstrap state bucket (first run only)
         run: |
           BUCKET="${{ steps.bucket.outputs.name }}"
@@ -102,9 +95,6 @@ jobs:
       - name: Terraform apply
         run: terraform apply -input=false -auto-approve tfplan
 
-  # ---------------------------------------------------------------
-  # 2. Build, scan and push the image
-  # ---------------------------------------------------------------
   build:
     name: Build, scan and push
     runs-on: ubuntu-latest
@@ -157,9 +147,6 @@ jobs:
       - name: Push image to ECR
         run: docker push ${{ steps.meta.outputs.image }}
 
-  # ---------------------------------------------------------------
-  # 3. Deploy to ECS
-  # ---------------------------------------------------------------
   deploy:
     name: Deploy to ECS
     runs-on: ubuntu-latest

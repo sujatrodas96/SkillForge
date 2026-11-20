@@ -22,7 +22,6 @@ env:
   CONTAINER_NAME: my-app-service
   AWS_ROLE_ARN: arn:aws:iam::490164024161:role/terra-OIDC
 
-
 jobs:
   # ---------------------------------------------------------------
   # 1. Infrastructure (Terraform)

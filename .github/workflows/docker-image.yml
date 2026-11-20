@@ -20,6 +20,8 @@ env:
   ECS_CLUSTER: my-app-cluster
   ECS_SERVICE: my-app-service
   CONTAINER_NAME: my-app-service
+  AWS_ROLE_ARN: arn:aws:iam::490164024161:role/terra-OIDC
+
 
 jobs:
   # ---------------------------------------------------------------

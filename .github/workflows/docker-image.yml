@@ -36,8 +36,6 @@ jobs:
         working-directory: ./infra
     env:
       TF_VAR_vpc_id: ${{ secrets.VPC_ID }}
-      # Must be valid JSON/HCL for a list(string), e.g. ["subnet-aaa","subnet-bbb"]
-      TF_VAR_subnet_ids: ${{ secrets.SUBNET_IDS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -49,11 +47,19 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           audience: sts.amazonaws.com
 
-      - name: Verify AWS Authentication
-        run: aws sts get-caller-identity
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+
+      # SUBNET_IDS can be "subnet-a,subnet-b", "[subnet-a, subnet-b]" or
+      # '["subnet-a","subnet-b"]'. Terraform needs a valid list(string).
+      - name: Format subnet IDs for Terraform
+        env:
+          SUBNET_IDS_RAW: ${{ secrets.SUBNET_IDS }}
+        run: |
+          JSON=$(printf '%s' "$SUBNET_IDS_RAW" | tr -d '[]" \n' | jq -R -c 'split(",") | map(select(length > 0))')
+          echo "TF_VAR_subnet_ids=$JSON" >> "$GITHUB_ENV"
 
       - name: Terraform fmt
         run: terraform fmt -check -recursive

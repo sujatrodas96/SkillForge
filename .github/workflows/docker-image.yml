@@ -44,21 +44,47 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
+          audience: sts.amazonaws.com
+
+      - name: Verify AWS Authentication
+        run: aws sts get-caller-identity
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.9.8
 
       - name: Terraform fmt
         run: terraform fmt -check -recursive
 
-      # Requires a remote backend (S3 + DynamoDB lock) declared in ./infra,
-      # otherwise state is lost on every run.
+      - name: Compute state bucket name
+        id: bucket
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          echo "name=tfstate-${ACCOUNT_ID}-${AWS_REGION}" >> "$GITHUB_OUTPUT"
+
+      # First run only: create the bucket through module.s3 using local state,
+      # then migrate that state into the new bucket.
+      - name: Bootstrap state bucket (first run only)
+        run: |
+          BUCKET="${{ steps.bucket.outputs.name }}"
+          if aws s3api head-bucket --bucket "$BUCKET" 2>/dev/null; then
+            echo "State bucket exists, skipping bootstrap."
+            exit 0
+          fi
+          mv backend.tf backend.tf.disabled
+          terraform init -input=false
+          terraform apply -input=false -auto-approve -target=module.s3
+          mv backend.tf.disabled backend.tf
+          terraform init -input=false -migrate-state -force-copy \
+            -backend-config="bucket=$BUCKET" \
+            -backend-config="region=${AWS_REGION}"
+
       - name: Terraform init
-        run: terraform init -input=false
+        run: |
+          terraform init -input=false \
+            -backend-config="bucket=${{ steps.bucket.outputs.name }}" \
+            -backend-config="region=${{ env.AWS_REGION }}"
 
       - name: Terraform validate
         run: terraform validate

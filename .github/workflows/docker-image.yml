@@ -1,46 +1,76 @@
-name: Docker Image CI
+name: Deploy Infra and App
 
 on:
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["main"]
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: skillforge
+  ECS_CLUSTER: my-app-cluster
+  ECS_SERVICE: my-app-service
+  CONTAINER_NAME: my-app-service
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
+      # 1. Create/Update Infrastructure
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init & Apply
+        working-directory: ./infra
+        env:
+          TF_VAR_vpc_id: ${{ secrets.VPC_ID }}
+          TF_VAR_subnet_ids: ${{ secrets.SUBNET_IDS }}
+        run: |
+          terraform init
+          terraform apply -auto-approve
+
+      # 2. Build & Scan Docker Image
       - name: Build Docker image
-        run: docker build -t skillforge:v2 .
+        run: docker build -t ${{ env.ECR_REPOSITORY }}:${{ github.sha }} .
 
-      - name: Run Trivy vulnerability scanner
+      - name: Trivy vulnerability scan
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: 'skillforge:v2'
+          image-ref: '${{ env.ECR_REPOSITORY }}:${{ github.sha }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
 
-      - name: Login to Docker Hub
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: docker/login-action@v4
-        with:
-          username: 'sujatro123'
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # 3. Push to ECR
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build and Push
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          push: true
-          tags: sujatro123/skillforge:v2
+      - name: Push image to ECR
+        env:
+          IMAGE_URI: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+        run: |
+          docker tag ${{ env.ECR_REPOSITORY }}:${{ github.sha }} $IMAGE_URI
+          docker push $IMAGE_URI
+
+      # 4. Deploy to ECS
+      - name: Update ECS service
+        env:
+          IMAGE_URI: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ env.ECS_SERVICE }} --query taskDefinition > task-def.json
+          jq --arg IMAGE "$IMAGE_URI" '.containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' task-def.json > new-task-def.json
+          aws ecs register-task-definition --cli-input-json file://new-task-def.json
+          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --task-definition ${{ env.ECS_SERVICE }} --desired-count 1 --force-new-deployment

@@ -1,5 +1,4 @@
 name: Deploy Infra and App
-
 on:
   push:
     branches: ["main"]

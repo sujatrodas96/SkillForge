@@ -28,19 +28,19 @@ locals {
 
 # Remote state bucket (used by the backend in backend.tf)
 module "s3" {
-  source      = "./modules/s3"
+  source      = "./module/s3"
   bucket_name = local.state_bucket_name
   tags        = merge(local.common_tags, { Purpose = "terraform-state" })
 }
 
 module "ecr" {
-  source          = "./modules/ecr"
+  source          = "./module/ecr"
   repository_name = "my-app-repo"
   tags            = local.common_tags
 }
 
 module "ecs" {
-  source          = "./modules/ecs"
+  source          = "./module/ecs"
   cluster_name    = "my-app-cluster"
   service_name    = "my-app-service"
   container_image = "${module.ecr.repository_url}:${var.image_tag}"

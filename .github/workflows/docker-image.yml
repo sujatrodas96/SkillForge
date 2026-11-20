@@ -3,6 +3,16 @@ name: Deploy Infra and App
 on:
   push:
     branches: ["main"]
+  workflow_dispatch:
+
+# One deployment at a time; never cancel a run that may be mid-apply
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write # required for OIDC to AWS
 
 env:
   AWS_REGION: us-east-1
@@ -12,65 +22,142 @@ env:
   CONTAINER_NAME: my-app-service
 
 jobs:
-  deploy:
+  # ---------------------------------------------------------------
+  # 1. Infrastructure (Terraform)
+  # ---------------------------------------------------------------
+  terraform:
+    name: Terraform
     runs-on: ubuntu-latest
-
+    timeout-minutes: 30
+    environment: production # add required reviewers in repo settings for approval
+    defaults:
+      run:
+        working-directory: ./infra
+    env:
+      TF_VAR_vpc_id: ${{ secrets.VPC_ID }}
+      # Must be valid JSON/HCL for a list(string), e.g. ["subnet-aaa","subnet-bbb"]
+      TF_VAR_subnet_ids: ${{ secrets.SUBNET_IDS }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # 1. Create/Update Infrastructure
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-
-      - name: Terraform Init & Apply
-        working-directory: ./infra
-        env:
-          TF_VAR_vpc_id: ${{ secrets.VPC_ID }}
-          TF_VAR_subnet_ids: ${{ secrets.SUBNET_IDS }}
-        run: |
-          terraform init
-          terraform apply -auto-approve
-
-      # 2. Build & Scan Docker Image
-      - name: Build Docker image
-        run: docker build -t ${{ env.ECR_REPOSITORY }}:${{ github.sha }} .
-
-      - name: Trivy vulnerability scan
-        uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: '${{ env.ECR_REPOSITORY }}:${{ github.sha }}'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          terraform_version: 1.9.8
 
-      # 3. Push to ECR
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive
+
+      # Requires a remote backend (S3 + DynamoDB lock) declared in ./infra,
+      # otherwise state is lost on every run.
+      - name: Terraform init
+        run: terraform init -input=false
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Terraform plan
+        run: terraform plan -input=false -out=tfplan
+
+      - name: Terraform apply
+        run: terraform apply -input=false -auto-approve tfplan
+
+  # ---------------------------------------------------------------
+  # 2. Build, scan and push the image
+  # ---------------------------------------------------------------
+  build:
+    name: Build, scan and push
+    runs-on: ubuntu-latest
+    needs: terraform
+    timeout-minutes: 30
+    outputs:
+      image: ${{ steps.meta.outputs.image }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Push image to ECR
-        env:
-          IMAGE_URI: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+      - name: Compute image URI
+        id: meta
         run: |
-          docker tag ${{ env.ECR_REPOSITORY }}:${{ github.sha }} $IMAGE_URI
-          docker push $IMAGE_URI
+          echo "image=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}" >> "$GITHUB_OUTPUT"
 
-      # 4. Deploy to ECS
-      - name: Update ECS service
-        env:
-          IMAGE_URI: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image (local, for scanning)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          push: false
+          tags: ${{ steps.meta.outputs.image }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ steps.meta.outputs.image }}
+          format: table
+          exit-code: "1"
+          ignore-unfixed: true
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
+
+      - name: Push image to ECR
+        run: docker push ${{ steps.meta.outputs.image }}
+
+  # ---------------------------------------------------------------
+  # 3. Deploy to ECS
+  # ---------------------------------------------------------------
+  deploy:
+    name: Deploy to ECS
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 20
+    steps:
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Download current task definition
         run: |
-          aws ecs describe-task-definition --task-definition ${{ env.ECS_SERVICE }} --query taskDefinition > task-def.json
-          jq --arg IMAGE "$IMAGE_URI" '.containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' task-def.json > new-task-def.json
-          aws ecs register-task-definition --cli-input-json file://new-task-def.json
-          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --task-definition ${{ env.ECS_SERVICE }} --desired-count 1 --force-new-deployment
+          aws ecs describe-task-definition \
+            --task-definition ${{ env.ECS_SERVICE }} \
+            --query taskDefinition > task-def.json
+
+      - name: Render new task definition with image
+        id: render
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-def.json
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ needs.build.outputs.image }}
+
+      - name: Deploy task definition and wait for stability
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render.outputs.task-definition }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          service: ${{ env.ECS_SERVICE }}
+          wait-for-service-stability: true
+          wait-for-minutes: 10

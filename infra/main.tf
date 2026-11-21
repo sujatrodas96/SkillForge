@@ -33,10 +33,22 @@ module "s3" {
   tags        = merge(local.common_tags, { Purpose = "terraform-state" })
 }
 
+# module "ecr" {
+#   source          = "./module/ecr"
+#   repository_name = "my-app-repo"
+#   tags            = local.common_tags
+# }
+
 module "ecr" {
-  source          = "./module/ecr"
-  repository_name = "my-app-repo"
-  tags            = local.common_tags
+  source = "./module/ecr"
+
+  repository_name      = "skillforge"
+  image_tag_mutability = "MUTABLE"
+
+  tags = {
+    Environment = "production"
+    ManagedBy   = "Terraform"
+  }
 }
 
 module "ecs" {
